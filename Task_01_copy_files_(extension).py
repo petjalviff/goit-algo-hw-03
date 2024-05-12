@@ -1,5 +1,6 @@
 import os
 import shutil
+import sys
 
 def copy_and_move_files(source_dir, destination_dir):
     try:
@@ -37,17 +38,13 @@ def copy_and_move_files(source_dir, destination_dir):
         print(f"Error: Відмовлено в доступі '{e.filename}'")
 
 def main():
-    source_dir = input("Введіть шлях вихідної директорії: ")
-    path=input("Введіть шлях директорії призначення: ")
-    # print("path before if= ", path)
-    #Обробка шляху коли користувачем не було надано його (шлях по замовчуванню)
-    if not path:
-        # print("path if= ", path)
-        current_dir = os.path.dirname(source_dir)
-        # print("current_dir is", current_dir)
-        path=os.path.join(current_dir, "dist")
-    # print(path)
-    destination_dir = path
+    # Парсинг аргументів командного рядка
+    if len(sys.argv) < 2:
+        print("Застосування: python script.py <source_directory> [destination_directory]")
+        sys.exit(1)
+
+    source_dir = sys.argv[1]
+    destination_dir = sys.argv[2] if len(sys.argv) > 2 else "dist"
 
     copy_and_move_files(source_dir, destination_dir)
 
